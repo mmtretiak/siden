@@ -55,6 +55,16 @@ func TestService_ReadFile(t *testing.T) {
 	if len(uniqueWords) != len(res) {
 		t.Fatalf("invalid res, expected len: %d, actual: %d", len(uniqueWords), len(res))
 	}
+
+	uniqueWords = make(map[string]struct{})
+
+	for _, word := range res {
+		if _, ok := uniqueWords[word]; ok {
+			t.Fatalf("found duplication of word: %s", word)
+		}
+
+		uniqueWords[word] = struct{}{}
+	}
 }
 
 func TestService_WriteToFile(t *testing.T) {
