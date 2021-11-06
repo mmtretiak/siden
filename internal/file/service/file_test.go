@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	pathToFile = "./file_example.txt"
-	bufferSize = 1024 * 100
+	fileName   = "file_example.txt"
+	bufferSize = 1024
 )
 
 func TestService_ReadFile(t *testing.T) {
@@ -20,17 +20,18 @@ func TestService_ReadFile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	service := New(bufferSize, log)
+	service := New(bufferSize, "./", log)
 
-	res, err := service.ReadFile(pathToFile)
+	res, err := service.ReadFile(fileName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	file, err := os.Open(pathToFile)
+	file, err := os.Open(fileName)
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer file.Close()
 
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
@@ -41,6 +42,10 @@ func TestService_ReadFile(t *testing.T) {
 	uniqueWords := make(map[string]struct{})
 
 	for _, word := range words {
+		if word == "" {
+			continue
+		}
+
 		uniqueWords[word] = struct{}{}
 	}
 
@@ -55,12 +60,13 @@ func BenchmarkService_ReadFile(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	service := New(bufferSize, log)
+	service := New(bufferSize, "./", log)
 
 	for n := 0; n < b.N; n++ {
-		_, err := service.ReadFile(pathToFile)
+		_, err := service.ReadFile(fileName)
 		if err != nil {
 			b.Fatal(err)
 		}
+		b.ReportAllocs()
 	}
 }
