@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -12,8 +13,9 @@ import (
 )
 
 const (
-	fileName   = "file_example.txt"
-	bufferSize = 1024
+	fileName    = "file_example.txt"
+	bufferSize  = 1024
+	pathToStore = "../test_data/"
 )
 
 func TestService_ReadFile(t *testing.T) {
@@ -22,14 +24,14 @@ func TestService_ReadFile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	service := New(bufferSize, "./", log)
+	service := New(bufferSize, pathToStore, log)
 
 	res, err := service.ReadFile(fileName)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	file, err := os.Open(fileName)
+	file, err := os.Open(filepath.Join(pathToStore, fileName))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -121,7 +123,7 @@ func BenchmarkService_ReadFile(b *testing.B) {
 		b.Fatal(err)
 	}
 
-	service := New(bufferSize, "./", log)
+	service := New(bufferSize, pathToStore, log)
 
 	for n := 0; n < b.N; n++ {
 		_, err := service.ReadFile(fileName)
