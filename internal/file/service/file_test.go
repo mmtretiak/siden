@@ -14,7 +14,7 @@ import (
 
 const (
 	fileName    = "file_example.txt"
-	bufferSize  = 1024
+	bufferSize  = 1024 * 1024 * 12 // 96MB
 	pathToStore = "../test_data/"
 )
 
@@ -130,6 +130,7 @@ func BenchmarkService_ReadFile(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
+
 		b.ReportAllocs()
 	}
 }

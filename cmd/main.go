@@ -11,7 +11,7 @@ import (
 
 const (
 	loggerType  = logger.DevelopmentLogType
-	bufferSize  = 1024 * 1024 * 500
+	bufferSize  = 1024 * 1024 * 50
 	pathToStore = "./store"
 	maxMemory   = 1024 * 1024 * 50
 	addr        = "localhost:8080"
