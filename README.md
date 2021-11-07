@@ -1,4 +1,4 @@
-#Architecture
+## Architecture
 HTTP webservice with two endpoints
 1. POST `/file` for saving file on disk
 2. GET `/file?fileName=?` for getting "processed" file
@@ -12,7 +12,7 @@ operation from time perspective is syscall.Read, which is expected.
 If we look into total allocated bytes per operation from benchmark, it will be big.
 But idea is to build application which will not use huge amount of memory at once.
 
-#Benchmarks
+## Benchmarks
 Benchmarks results:
 
 totalAlloc - how many memory was used from start of bench
@@ -23,7 +23,7 @@ maxAlloc - pick of memory usage
 
 `1GB` file with buffer `~100MB`: timeSpent - `~7.6s` maxAlloc - `~300MB` totalAlloc - `~2.9GB`
 
-#Improvements
+## Improvements
 
 1. Rework `/file?fileName=?` endpoint, so it will start background job, result and status of which will be available on `/job` endpoint.
 This will improve architecture of system, so user won't wait for long response in case of large files, instead
